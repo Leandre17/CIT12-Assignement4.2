@@ -53,15 +53,35 @@ public class DataService : IDataService
         var db = new NorthwindContext();
         return db.Categories?.Where(x => x.Id == categoryId).SingleOrDefault(); ;
     }
-    public IList<Product>? GetProducts()
+    public IList<ProductDTO>? GetProducts()
     {
         var db = new NorthwindContext();
-        return db.Products?.ToList();
+        return db.Products?.Select(p => new ProductDTO
+        {
+            Id = p.Id,
+            ProductName = p.Name,
+            Name = p.Name,
+            UnitPrice = p.UnitPrice,
+            UnitsInStock = p.UnitsInStock,
+            QuantityPerUnit = p.QuantityPerUnit,
+            CategoryId = p.CategoryId,
+            CategoryName = p.Category != null ? p.Category.Name : null
+        }).ToList();
     }
-    public IList<Product>? GetProducts(int categoryId)
+    public IList<ProductDTO>? GetProducts(int categoryId)
     {
         var db = new NorthwindContext();
-        return db.Products?.Where(x => x.CategoryId == categoryId).ToList();
+        return db.Products?.Where(x => x.CategoryId == categoryId).Select(p => new ProductDTO
+        {
+            Id = p.Id,
+            ProductName = p.Name,
+            Name = p.Name,
+            UnitPrice = p.UnitPrice,
+            UnitsInStock = p.UnitsInStock,
+            QuantityPerUnit = p.QuantityPerUnit,
+            CategoryId = p.CategoryId,
+            CategoryName = p.Category != null ? p.Category.Name : null
+        }).ToList();
     }
 
     public bool UpdateCategory(int id, string name, string description)

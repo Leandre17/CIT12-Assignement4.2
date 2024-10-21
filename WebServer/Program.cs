@@ -1,5 +1,10 @@
+using DataLayer;
+using Mapster;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddSingleton<IDataService, DataService>();
 
 // Add services to the container.
 builder.Services.AddMvcCore();
@@ -12,6 +17,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-app.UseRouting();
+app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
