@@ -16,8 +16,8 @@ internal class NorthwindContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+        // optionsBuilder.EnableSensitiveDataLogging();
+        // optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
         optionsBuilder.UseNpgsql("host=localhost;db=northwind;uid=postgres;pwd=");
     }
 

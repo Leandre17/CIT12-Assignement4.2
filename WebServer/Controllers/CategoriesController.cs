@@ -24,7 +24,7 @@ public class CategoriesController : ControllerBase
     public IActionResult GetCategories()
     {
         var categories = _dataService?
-            .GetCategories()
+            .GetCategories()?
             .Select(CreateCategoryModel);
         return Ok(categories);
     }
@@ -35,21 +35,18 @@ public class CategoriesController : ControllerBase
         var category = _dataService.GetCategory(id);
 
         if (category == null)
-        {
             return NotFound();
-        }
         var model = CreateCategoryModel(category);
 
         return Ok(model);
     }
 
-   
 
     [HttpPost]
     public IActionResult CreateCategory(CreateCategoryModel model)
     {
         var category = _dataService.CreateCategory(model.Name, model.Description);
-        return Ok(CreateCategoryModel(category));
+        return Created(GetUrl(category.Id), category);
     }
 
     [HttpDelete("{id}")]
@@ -58,10 +55,7 @@ public class CategoriesController : ControllerBase
         var result = _dataService.DeleteCategory(id);
 
         if (result)
-        {
-            return NoContent();
-        }
-
+            return Ok();
         return NotFound();
     }
 
@@ -70,12 +64,12 @@ public class CategoriesController : ControllerBase
     {
         var category = _dataService.GetCategory(id);
 
-        if(category == null)
+        if (category == null)
         {
             return NotFound();
         }
 
-        
+
 
         category.Name = model.Name;
         category.Description = model.Description;
@@ -83,14 +77,14 @@ public class CategoriesController : ControllerBase
 
         _dataService.UpdateCategory(id, model.Name, model.Description);
 
-        return NoContent();
+        return Ok();
     }
 
 
 
     private CategoryModel? CreateCategoryModel(Category? category)
     {
-        if(category == null)
+        if (category == null)
         {
             return null;
         }
