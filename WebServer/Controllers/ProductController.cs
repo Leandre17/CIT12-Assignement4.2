@@ -12,9 +12,7 @@ public class ProductsController : ControllerBase
     IDataService _dataService;
     private readonly LinkGenerator _linkGenerator;
 
-    public ProductsController(
-        IDataService dataService,
-        LinkGenerator linkGenerator)
+    public ProductsController(IDataService dataService, LinkGenerator linkGenerator)
     {
         _dataService = dataService;
         _linkGenerator = linkGenerator;
@@ -28,7 +26,6 @@ public class ProductsController : ControllerBase
         if (Product == null)
             return NotFound();
         var model = CreateProductModel(Product);
-
         return Ok(model);
     }
 
@@ -39,7 +36,6 @@ public class ProductsController : ControllerBase
 
         if (Product == null || !Product.Any())
             return NotFound(new List<ProductModel>());
-
         var models = CreateProductModels(Product);
         return Ok(models);
     }
@@ -52,7 +48,6 @@ public class ProductsController : ControllerBase
         if (Product == null || !Product.Any())
             return NotFound(new List<ProductModel>());
         var models = CreateProductModels(Product);
-
         return Ok(models);
     }
 
@@ -60,10 +55,8 @@ public class ProductsController : ControllerBase
     {
         if (Product == null)
             return null;
-
         var model = Product.Adapt<ProductModel>();
         model.Url = GetUrl(Product.Id);
-
         return model;
     }
 
@@ -71,16 +64,15 @@ public class ProductsController : ControllerBase
     {
         if (products == null || !products.Any())
             return new List<ProductModel>();
-
         var models = products.Select(product =>
-        {
-            var model = product.Adapt<ProductModel>();
-            model.Url = GetUrl(product.Id);
-            return model;
-        }).ToList();
-
+            {
+                var model = product.Adapt<ProductModel>();
+                model.Url = GetUrl(product.Id);
+                return model;
+            }).ToList();
         return models;
     }
+
     private string? GetUrl(int id)
     {
         return _linkGenerator.GetUriByName(HttpContext, nameof(GetProduct), new { id });

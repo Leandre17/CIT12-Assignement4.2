@@ -9,11 +9,10 @@ public interface IDataService
 {
     IList<Category>? GetCategories();
     Category? GetCategory(int categoryId);
-
     Category CreateCategory(string name, string description);
-
     bool DeleteCategory(int id);
     bool UpdateCategory(int id, string name, string description);
+
     IList<ProductDTO>? GetProducts();
     ProductDTO? GetProduct(int productId);
     IList<ProductDTO>? GetProductByCategory(int categoryId);

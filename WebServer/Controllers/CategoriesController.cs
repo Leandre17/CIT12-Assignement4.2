@@ -12,9 +12,7 @@ public class CategoriesController : ControllerBase
     IDataService _dataService;
     private readonly LinkGenerator _linkGenerator;
 
-    public CategoriesController(
-        IDataService dataService,
-        LinkGenerator linkGenerator)
+    public CategoriesController(IDataService dataService, LinkGenerator linkGenerator)
     {
         _dataService = dataService;
         _linkGenerator = linkGenerator;
@@ -37,10 +35,8 @@ public class CategoriesController : ControllerBase
         if (category == null)
             return NotFound();
         var model = CreateCategoryModel(category);
-
         return Ok(model);
     }
-
 
     [HttpPost]
     public IActionResult CreateCategory(CreateCategoryModel model)
@@ -65,33 +61,19 @@ public class CategoriesController : ControllerBase
         var category = _dataService.GetCategory(id);
 
         if (category == null)
-        {
             return NotFound();
-        }
-
-
-
         category.Name = model.Name;
         category.Description = model.Description;
-
-
         _dataService.UpdateCategory(id, model.Name, model.Description);
-
         return Ok();
     }
-
-
 
     private CategoryModel? CreateCategoryModel(Category? category)
     {
         if (category == null)
-        {
             return null;
-        }
-
         var model = category.Adapt<CategoryModel>();
         model.Url = GetUrl(category.Id);
-
         return model;
     }
 
