@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DataLayer;
 public class DataService : IDataService
 {
-    public Category CreateCategory(string name, string description)
+    public Category CreateCategory(string name, string? description)
     {
         var db = new NorthwindContext();
         int id = (db.Categories?.Any() ?? false) ? db.Categories.Max(x => x.Id) + 1 : 1;
@@ -47,6 +47,19 @@ public class DataService : IDataService
         return db.Categories?.Where(x => x.Id == categoryId).SingleOrDefault(); ;
     }
 
+    public bool UpdateCategory(int id, string name, string? description)
+    {
+        var db = new NorthwindContext();
+        var category = db.Categories?.Find(id);
+
+        if (category == null)
+            return false;
+        category.Name = name;
+        category.Description = description;
+        db.Categories?.Update(category);
+        return db.SaveChanges() > 0;
+    }
+
     public IList<ProductDTO>? GetProducts()
     {
         var db = new NorthwindContext();
@@ -79,19 +92,6 @@ public class DataService : IDataService
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category != null ? p.Category.Name : null
             }).ToList();
-    }
-
-    public bool UpdateCategory(int id, string name, string description)
-    {
-        var db = new NorthwindContext();
-        var category = db.Categories?.Find(id);
-
-        if (category == null)
-            return false;
-        category.Name = name;
-        category.Description = description;
-        db.Categories?.Update(category);
-        return db.SaveChanges() > 0;
     }
 
     public ProductDTO? GetProduct(int productId)

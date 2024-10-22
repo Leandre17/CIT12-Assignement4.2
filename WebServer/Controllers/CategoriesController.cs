@@ -62,8 +62,6 @@ public class CategoriesController : ControllerBase
 
         if (category == null)
             return NotFound();
-        category.Name = model.Name;
-        category.Description = model.Description;
         _dataService.UpdateCategory(id, model.Name, model.Description);
         return Ok();
     }
